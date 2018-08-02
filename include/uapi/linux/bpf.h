@@ -707,6 +707,31 @@ union bpf_attr {
  * 	Return
  * 		0 on success, or a negative error in case of failure.
  *
+ * int bpf_bind(ctx, addr, addr_len)
+ *     Bind socket to address. Only binding to IP is supported, no port can be
+ *     set in addr.
+ *     @ctx: pointer to context of type bpf_sock_addr
+ *     @addr: pointer to struct sockaddr to bind socket to
+ *     @addr_len: length of sockaddr structure
+ *     Return: 0 on success or negative error code
+ *
+ * void* get_local_storage(void *map, u64 flags)
+ *	Description
+ *		Get the pointer to the local storage area.
+ *		The type and the size of the local storage is defined
+ *		by the *map* argument.
+ *		The *flags* meaning is specific for each map type,
+ *		and has to be 0 for cgroup local storage.
+ *
+ *		Depending on the bpf program type, a local storage area
+ *		can be shared between multiple instances of the bpf program,
+ *		running simultaneously.
+ *
+ *		A user should care about the synchronization by himself.
+ *		For example, by using the BPF_STX_XADD instruction to alter
+ *		the shared data.
+ *	Return
+ *		Pointer to the local storage area.
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
