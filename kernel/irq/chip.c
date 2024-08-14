@@ -305,9 +305,7 @@ void irq_shutdown(struct irq_desc *desc)
 
 void irq_enable(struct irq_desc *desc)
 {
-	if (!irqd_irq_disabled(&desc->irq_data)) {
-		unmask_irq(desc);
-	} else {
+	if (irqd_irq_disabled(&desc->irq_data)) {
 		irq_state_clr_disabled(desc);
 		if (desc->irq_data.chip->irq_enable) {
 			desc->irq_data.chip->irq_enable(&desc->irq_data);
@@ -315,6 +313,8 @@ void irq_enable(struct irq_desc *desc)
 		} else {
 			unmask_irq(desc);
 		}
+	} else {
+		WARN(1, "IRQ %d is already enabled\n", desc->irq_data.irq);
 	}
 }
 
