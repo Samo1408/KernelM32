@@ -1476,6 +1476,16 @@ void rt_add_uncached_list(struct rtable *rt)
 	spin_unlock_bh(&ul->lock);
 }
 
+void rt_del_uncached_list(struct rtable *rt)
+{
+	if (!list_empty(&rt->rt_uncached)) {
+		struct uncached_list *ul = rt->rt_uncached_list;
+		spin_lock_bh(&ul->lock);
+		list_del(&rt->rt_uncached);
+		spin_unlock_bh(&ul->lock);
+	}
+}
+
 static bool rt_cache_route(struct fib_nh *nh, struct rtable *rt)
 {
 	struct rtable *orig, *prev, **p;
@@ -1514,12 +1524,7 @@ static void ipv4_dst_destroy(struct dst_entry *dst)
 	if (p != &dst_default_metrics && refcount_dec_and_test(&p->refcnt))
 		kfree(p);
 
-	if (!list_empty(&rt->rt_uncached)) {
-		struct uncached_list *ul = rt->rt_uncached_list;
-		spin_lock_bh(&ul->lock);
-		list_del(&rt->rt_uncached);
-		spin_unlock_bh(&ul->lock);
-	}
+	rt_del_uncached_list(rt);
 }
 
 void rt_flush_dev(struct net_device *dev)
