@@ -75,6 +75,12 @@
 
 #include "audit.h"
 
+// [ SEC_SELINUX_PORTING_COMMON
+#ifdef CONFIG_PROC_AVC
+#include <linux/proc_avc.h>
+#endif
+// ] SEC_SELINUX_PORTING_COMMON
+
 /* No auditing will take place until audit_initialized == AUDIT_INITIALIZED.
  * (Initialization happens after skb_init is called.) */
 #define AUDIT_DISABLED		-1
@@ -84,15 +90,19 @@ static int	audit_initialized;
 
 #define AUDIT_OFF	0
 #define AUDIT_ON	1
-#define AUDIT_LOCKED	2
-u32		audit_enabled = AUDIT_OFF;
-u32		audit_ever_enabled = !!AUDIT_OFF;
-
+#define AUDIT_LOCKED	2							   
+// [ SEC_SELINUX_PORTING_COMMON
+u32		audit_enabled = AUDIT_ON;
+u32		audit_ever_enabled = !!AUDIT_ON;
+// ] SEC_SELINUX_PORTING_COMMON
+							   
 EXPORT_SYMBOL_GPL(audit_enabled);
-
 /* Default state when kernel boots without any parameters. */
-static u32	audit_default = AUDIT_OFF;
-
+// [ SEC_SELINUX_PORTING_COMMON
+// Samsung Change Value from AUDIT_OFF to AUDIT_ON
+static u32	audit_default = AUDIT_ON;
+// ] SEC_SELINUX_PORTING_COMMON
+							   
 /* If auditing cannot proceed, audit_failure selects what happens. */
 static u32	audit_failure = AUDIT_FAIL_PRINTK;
 
@@ -502,8 +512,15 @@ static void kauditd_printk_skb(struct sk_buff *skb)
 	struct nlmsghdr *nlh = nlmsg_hdr(skb);
 	char *data = nlmsg_data(nlh);
 
+	// [ SEC_SELINUX_PORTING_COMMON
+#ifdef CONFIG_PROC_AVC
+	if (nlh->nlmsg_type != AUDIT_EOE && nlh->nlmsg_type != AUDIT_NETFILTER_CFG)
+		sec_avc_log("%s\n", data);
+#else
 	if (nlh->nlmsg_type != AUDIT_EOE && printk_ratelimit())
 		pr_notice("type=%d %s\n", nlh->nlmsg_type, data);
+#endif
+// ] SEC_SELINUX_PORTING_COMMON
 }
 
 /**
@@ -745,7 +762,15 @@ retry:
 			} else
 				goto retry;
 		} else {
-			/* skb sent - drop the extra reference and continue */
+// [ SEC_SELINUX_PORTING_COMMON
+#ifdef CONFIG_PROC_AVC
+			struct nlmsghdr *nlh = nlmsg_hdr(skb);
+			char *data = nlmsg_data(nlh);
+
+			if (nlh->nlmsg_type != AUDIT_EOE && nlh->nlmsg_type != AUDIT_NETFILTER_CFG)
+				sec_avc_log("%s\n", data);
+#endif
+// ] SEC_SELINUX_PORTING_COMMON			/* it worked - drop the extra reference and continue */
 			consume_skb(skb);
 			failed = 0;
 		}
@@ -874,6 +899,19 @@ main_queue:
 
 	return 0;
 }
+
+#ifdef CONFIG_MTK_SELINUX_AEE_WARNING
+/*
+ * return skb field of audit buffer
+ */
+struct sk_buff *audit_get_skb(struct audit_buffer *ab)
+{
+	if (ab)
+		return (struct sk_buff *)(ab->skb);
+	else
+		return NULL;
+}
+#endif
 
 int audit_send_list_thread(void *_dest)
 {
@@ -1728,7 +1766,7 @@ struct audit_buffer *audit_log_start(struct audit_context *ctx, gfp_t gfp_mask,
 {
 	struct audit_buffer *ab;
 	struct timespec64 t;
-	unsigned int uninitialized_var(serial);
+	unsigned int serial;
 
 	if (audit_initialized != AUDIT_INITIALIZED)
 		return NULL;
