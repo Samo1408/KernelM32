@@ -1420,7 +1420,7 @@ void udp_destruct_common(struct sock *sk)
 }
 EXPORT_SYMBOL_GPL(udp_destruct_common);
 
-static void udp_destruct_sock(struct sock *sk)
+void udp_destruct_sock(struct sock *sk)
 {
 	udp_destruct_common(sk);
 	inet_sock_destruct(sk);
