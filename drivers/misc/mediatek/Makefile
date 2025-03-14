@@ -79,7 +79,6 @@ obj-$(CONFIG_RT_FLASHLIGHT)     += flashlight/richtek/
 obj-$(CONFIG_MTK_VPU_SUPPORT) += vpu/
 obj-$(CONFIG_MTK_IN_HOUSE_TEE_SUPPORT) += mtee/
 obj-$(CONFIG_MTK_IN_HOUSE_TEE_SUPPORT) += gcpu/
-obj-$(CONFIG_MTK_MLOG) += mlog/
 obj-$(CONFIG_MTK_AUXADC)	+= auxadc/
 obj-$(CONFIG_MTK_GPT_SCHEME_SUPPORT)	+= partition/
 obj-$(CONFIG_MTK_PWM)	    += pwm/

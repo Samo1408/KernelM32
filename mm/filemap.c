@@ -2569,9 +2569,6 @@ int filemap_fault(struct vm_fault *vmf)
 		fpin = do_async_mmap_readahead(vmf, page);
 	} else if (!page) {
 		/* No page in the page cache at all */
-#ifdef CONFIG_MTK_MLOG
-		current->fm_flt++;
-#endif
 		count_vm_event(PGMAJFAULT);
 		count_vm_event(PGFMFAULT);
 		count_memcg_event_mm(vmf->vma->vm_mm, PGMAJFAULT);
