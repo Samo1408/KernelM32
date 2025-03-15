@@ -103,9 +103,10 @@ usage() {
 	exit;
 }
 
+BUILD_TARGET="$1"
 pr_post_build() {
 	echo ""
-	[ "$@" = "failed" ] && echo -e "${R}#### Failed to build some targets ($1) ####${N}" ||	echo -e "${G}#### Build completed at `date` ####${N}"
+	[ "$@" = "failed" ] && echo -e "${R}#### Failed to build some targets ($BUILD_TARGET) ####${N}" ||	echo -e "${G}#### Build completed at `date` ####${N}"
 	echo ""
 	echo "======================================================="
 	[ -e $IMAGE ] && strings $IMAGE | grep "Linux version" || exit
@@ -154,7 +155,6 @@ fi
 
 [ "$KERNELSU" = "true" ] && curl -LSs $DEFAULT_KSU_REPO | bash -s `echo $DEFAULT_KSU_BRANCH` || pr_info "KernelSU is disabled. Add 'KERNELSU=true' or 'export KERNELSU=true' to enable"
 
-BUILD_TARGET="$1"
 FIRST_JOB="$2"
 JOB_COUNT="$3"
 DEFCONFIG="$4"
