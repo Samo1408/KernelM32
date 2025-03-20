@@ -15,6 +15,8 @@
 [ -z $DEVICE ] && DEVICE="M325FV"
 [ -z $IMAGE ] && IMAGE="$(pwd)/out/arch/arm64/boot/Image"
 
+linuxversion=$(make kernelversion)
+
 # special rissu's path. linked to his toolchains
 if [ -d /rsuntk ]; then
 	export CROSS_COMPILE=/rsuntk/toolchains/google/bin/aarch64-linux-android-
@@ -47,7 +49,7 @@ pr_info() {
 	echo -e "[+] $@"
 }
 pr_step() {
-	echo "[$1 / $2] $3"
+	echo "[$1/$2] $3"
  	sleep 2
 }
 strip() { # fmt: strip <module>
@@ -106,11 +108,21 @@ usage() {
 BUILD_TARGET="$1"
 pr_post_build() {
 	echo ""
-	[ "$@" = "failed" ] && echo -e "${R}#### Failed to build some targets ($BUILD_TARGET) ####${N}" ||	echo -e "${G}#### Build completed at `date` ####${N}"
-	echo ""
-	echo "======================================================="
-	[ -e $IMAGE ] && strings $IMAGE | grep "Linux version" || exit
-	echo "======================================================="
+ 	if [ "$2" = "true" ]; then
+	 	echo ""
+	 	echo ">> AnyKernel3 zip: `find . -type f -name "AnyKernel3-*"`"
+		echo ""
+  	else
+		if [ "$1" = "failed" ]; then
+	 		echo -e "${R}#### Failed to build some targets ($BUILD_TARGET) ####${N}"
+	   		exit
+	   	else
+	    		echo -e "${G}#### Build completed at `date` ####${N}"
+		fi
+		[ -e $IMAGE ] && echo "=======================================================" || exit
+		strings $IMAGE | grep "Linux version" 
+		echo "======================================================="
+  	fi
 }
 
 # if first arg starts with "clean"
@@ -183,43 +195,26 @@ else
 	pr_invalid $4
 fi
 
-if [ "$LLVM" = "1" ]; then
-	LLVM_="true"
-	DEFAULT_ARGS+=" LLVM=1"
-	export LLVM=1
-	if [ "$LLVM_IAS" = "1" ]; then
-		LLVM_IAS_="true"
-		DEFAULT_ARGS+=" LLVM_IAS=1"
-		export LLVM_IAS=1
-	fi
-else
-	LLVM_="false"
-	if [ "$LLVM_IAS" != "1" ]; then
-		LLVM_IAS_="false"
-	fi
-fi
-
 pr_sum() {
 	[ -z $KBUILD_BUILD_USER ] && KBUILD_BUILD_USER="`whoami`"
 	[ -z $KBUILD_BUILD_HOST ] && KBUILD_BUILD_HOST="`uname -n`"
  	pr_step "1" "3" "Starting build with Rissu's build script ..."
-	echo ""
 	echo "======================================================="
 	echo -e "Host Arch: `uname -m`"
 	echo -e "Host Kernel: `uname -r`"
 	echo -e "Host GNUMake: `make -v | grep -e "GNU Make"`"
 	echo -e "Kernel builder user: $KBUILD_BUILD_USER"
 	echo -e "Kernel builder host: $KBUILD_BUILD_HOST"
-	printf "\n"
-	echo -e "Linux version: `make kernelversion`"
+	echo -e "Linux version: $linuxversion"
 	echo -e "Build date: `date`"
 	echo -e "Build target: `echo $BUILD`"
 	echo -e "Build arch: $ARCH"
 	echo -e "Target Defconfig: $BUILD_DEFCONFIG"
 	echo -e "Allocated core(s): $ALLOC_JOB"
-	printf "\n"
 	echo -e "LTO: $LTO"
 	echo "======================================================="
+ 	echo "Make arg(s): $DEFAULT_ARGS"
+  	echo "======================================================="
 }
 
 post_build_clean() {
@@ -238,15 +233,11 @@ post_build_clean() {
 }
 
 post_build() {
-	if [ -d $(pwd)/.git ]; then
-		GITSHA=$(git rev-parse --short HEAD)
-	else
-		GITSHA="localbuild"
-	fi
+	[ -d $(pwd)/.git ] && GITSHA=$(git rev-parse --short HEAD) || GITSHA="localbuild"
 	
 	AK3="$(pwd)/AnyKernel3"
 	DATE=$(date +'%Y%m%d%H%M%S')
-	ZIP_FMT="AnyKernel3-`make kernelversion`-`echo $DEVICE`_$GITSHA-$DATE"
+	ZIP_FMT="AnyKernel3-`echo $linuxversion`-`echo $DEVICE`_$GITSHA-$DATE"
 	
 	clone_ak3;
 	if [ -d $AK3 ]; then
@@ -254,7 +245,9 @@ post_build() {
 		gen_getutsrelease;
 		[ -d $(pwd)/out ] && gcc -D__OUT__ -CC utsrelease.c -o getutsrel || gcc -CC utsrelease.c -o getutsrel
 		UTSRELEASE=$(./getutsrel)
+  		# special character potentially breaks!
 		sed -i "s/kernel\.string=.*/kernel.string=$UTSRELEASE/" "$AK3/anykernel.sh"
+  		# we only support newer ak3!
 		sed -i "s/BLOCK=.*/BLOCK=\/dev\/block\/platform\/bootdevice\/by-name\/boot;/" "$AK3/anykernel.sh"
 		cp $IMAGE $AK3
 		cd $AK3
@@ -298,10 +291,11 @@ if [ "$BUILD" = "kernel" ]; then
 	[ "$LTO" != "none" ] && handle_lto || pr_info "LTO not set";
 	make -j`echo $ALLOC_JOB` -C $(pwd) O=$(pwd)/out `echo $DEFAULT_ARGS`
 	if [ -e $IMAGE ]; then
-		pr_post_build "completed"
+		pr_post_build "completed" "false"
 		post_build
+		pr_post_build "null" "true"
 	else
-		pr_post_build "failed"
+		pr_post_build "failed" "false"
 	fi
 elif [ "$BUILD" = "defconfig" ]; then
 	make -j`echo $ALLOC_JOB` -C $(pwd) O=$(pwd)/out `echo $DEFAULT_ARGS` `echo $BUILD_DEFCONFIG`
