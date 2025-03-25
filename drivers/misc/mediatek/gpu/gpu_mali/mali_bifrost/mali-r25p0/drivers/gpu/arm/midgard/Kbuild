@@ -35,7 +35,7 @@ KBASE_PLATFORM_PATH = $(KBASE_PATH)/platform_dummy
 UMP_PATH = $(src)/../../../base
 
 # Set up defaults if not defined by build system
-MALI_CUSTOMER_RELEASE ?= 1
+MALI_CUSTOMER_RELEASE = 1
 MALI_USE_CSF ?= 0
 MALI_UNIT_TEST ?= 0
 MALI_KERNEL_TEST_API ?= 0

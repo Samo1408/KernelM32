@@ -1,5 +1,3 @@
-$(info mali MTK evironment, building r19p0 DDK)
-
 MTK_TOP = $(srctree)/drivers/misc/mediatek/
 
 # build support for a ARM Mali Midgard GPU
@@ -12,7 +10,7 @@ CONFIG_MALI_PLATFORM_THIRDPARTY_NAME := $(CONFIG_MTK_PLATFORM)
 $(info mtk-Kbuild CONFIG_MALI_PLATFORM_THIRDPARTY := $(CONFIG_MALI_PLATFORM_THIRDPARTY))
 $(info mtk-Kbuild CONFIG_MALI_PLATFORM_THIRDPARTY_NAME := $(CONFIG_MALI_PLATFORM_THIRDPARTY_NAME))
 
-CONFIG_MALI_DEBUG := y
+CONFIG_MALI_DEBUG := n
 
 ccflags-y += -I-I$(srctree)/include
 ccflags-y += -I$(srctree)/drivers/staging/android
@@ -36,6 +34,6 @@ $(info *GPU defined GPU BM QoS 2.0)
 endif
 
 ifneq (, $(findstring $(CONFIG_MTK_PLATFORM), "mt6771"))
-ccflags-y += -DENABLE_MTK_DEBUG
+#ccflags-y += -DENABLE_MTK_DEBUG
 $(info *GPU defined ENABLE_MTK_DEBUG)
 endif
