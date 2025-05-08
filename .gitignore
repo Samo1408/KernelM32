@@ -122,3 +122,9 @@ all.config
 
 # fetched Android config fragments
 kernel/configs/android-*.cfg
+
+# Build dir
+/out
+/AnyKernel3
+getutsrel
+*.zip
