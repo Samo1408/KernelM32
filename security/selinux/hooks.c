@@ -3229,7 +3229,7 @@ static int selinux_inode_init_security_anon(struct inode *inode,
 	struct inode_security_struct *isec;
 	int rc;
 
-	if (unlikely(!selinux_state.initialized))
+	if (unlikely(!ss_initialized))
 		return 0;
 
 	isec = inode->i_security;
