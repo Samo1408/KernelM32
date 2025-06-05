@@ -525,6 +525,22 @@ config PSI_DEFAULT_DISABLED
 
 endmenu # "CPU/Task time and stats accounting"
 
+menu "OneUI 7 stuff"
+
+config BPFLOADER_SPOOF
+	bool "Spoof kernel version to bpfloader"
+	default n
+	help
+	  Activate this if you want build it for OneUI 7
+
+config NEW_SDFAT
+	bool "Enable new Samsung SDFAT driver"
+	default n
+	help
+	  Activate this to fix sdcard issue on OneUI 7.
+
+endmenu # "OneUI 7 stuff"
+
 source "kernel/rcu/Kconfig"
 
 config BUILD_BIN2C
