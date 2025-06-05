@@ -3310,15 +3310,9 @@ static inline int kiocb_set_rw_flags(struct kiocb *ki, rwf_t flags)
 	}
 	kiocb_flags |= (__force int)(flags & RWF_SUPPORTED);
 	if (flags & RWF_SYNC)
-<<<<<<< HEAD
-		ki->ki_flags |= (IOCB_DSYNC | IOCB_SYNC);
-	if (flags & RWF_APPEND)
-		ki->ki_flags |= IOCB_APPEND;
-=======
 		kiocb_flags |= IOCB_DSYNC;
 
 	ki->ki_flags |= kiocb_flags;
->>>>>>> phoenix/android-4.14-phoenix
 	return 0;
 }
 
