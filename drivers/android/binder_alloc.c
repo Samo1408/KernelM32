@@ -44,7 +44,6 @@ enum {
 	BINDER_DEBUG_OPEN_CLOSE             = 1U << 1,
 	BINDER_DEBUG_BUFFER_ALLOC           = 1U << 2,
 	BINDER_DEBUG_BUFFER_ALLOC_ASYNC     = 1U << 3,
-	BINDER_DEBUG_USER_ERROR             = 1U << 4,
 };
 static uint32_t binder_alloc_debug_mask = BINDER_DEBUG_USER_ERROR;
 
