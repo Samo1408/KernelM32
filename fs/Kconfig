@@ -128,11 +128,7 @@ if BLOCK
 menu "DOS/FAT/NT Filesystems"
 
 source "fs/fat/Kconfig"
-if NEW_SDFAT
-source "fs/sdfat_ui7/Kconfig"
-else
 source "fs/sdfat/Kconfig"
-endif
 source "fs/ntfs/Kconfig"
 
 endmenu
