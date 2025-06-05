@@ -320,6 +320,7 @@ void __perf_tracker(u64 wallclock,
 	for (i = 0; i < nr_cpu_ids || i < max_cpus; i++)
 		stall[i] = cpu_stall_ratio(i);
 
+#if 0
 	/* trace for long msg */
 	trace_perf_index_l(
 			K(mm_free),
@@ -336,6 +337,7 @@ void __perf_tracker(u64 wallclock,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 #endif
 			stall);
+#endif
 }
 
 #if CONFIG_MTK_GAUGE_VERSION == 30

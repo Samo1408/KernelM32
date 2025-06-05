@@ -3657,7 +3657,6 @@ static int binder_proc_transaction(struct binder_transaction *t,
 
 		t_outdated->buffer = NULL;
 		buffer->transaction = NULL;
-		trace_binder_transaction_update_buffer_release(buffer);
 		binder_transaction_buffer_release(proc, buffer, 0, false);
 		binder_alloc_free_buf(&proc->alloc, buffer);
 		kfree(t_outdated);
