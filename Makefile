@@ -381,6 +381,8 @@ KBUILD_HOSTCXXFLAGS := -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
 KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
 KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
 
+CLANG_VERSION=$(shell $(srctree)/scripts/clang-version.sh $(CC))
+
 # Make variables (CC, etc...)
 CPP		= $(CC) -E
 ifneq ($(LLVM),)
@@ -446,6 +448,10 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -std=gnu89
+ifeq ($(shell test $(CLANG_VERSION) -gt 140000; echo $$?),0)
+KBUILD_CFLAGS += -Wno-int-conversion
+endif
+
 KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
@@ -731,7 +737,6 @@ KBUILD_CFLAGS += $(call cc-option,-fno-reorder-blocks,) \
 endif
 
 # Rissu: handle older toolchains
-CLANG_VERSION=$(shell $(srctree)/scripts/clang-version.sh $(CC))
 ifeq ($(shell test $(CLANG_VERSION) -gt 110000; echo $$?),0)
 ifdef CONFIG_LLVM_POLLY
 KBUILD_CFLAGS	+= -mllvm -polly \
