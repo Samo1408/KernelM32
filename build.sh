@@ -18,12 +18,16 @@
 # special rissu's path. linked to his toolchains
 if [ -d /rsuntk ]; then
 	export CROSS_COMPILE=/rsuntk/toolchains/google/bin/aarch64-linux-android-
-	export PATH=/rsuntk/toolchains/clang-12/bin:$PATH
+ 	export CROSS_COMPILE_COMPAT=/rsuntk/toolchains/arm/bin/arm-linux-gnueabi-
+	export CROSS_COMPILE_ARM32=$CROSS_COMPILE_COMPAT
+ 	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
 fi
 # color variable
 N='\033[0m'
 R='\033[1;31m'
 G='\033[1;32m'
+
+# This default args is not complete!
 
 # start of default args
 DEFAULT_ARGS="
@@ -93,6 +97,7 @@ usage() {
 	echo ""
 	printf "NOTE: Run: \texport CROSS_COMPILE=\"<PATH_TO_ANDROID_CC>\"\n"
 	printf "\t\texport PATH=\"<PATH_TO_LLVM>\"\n"
+ 	printf "\t\texport CROSS_COMPILE_COMPAT=\"<PATH_TO_ARM_32_CC>\"\n"
 	printf "before running this script!\n"
 	printf "\n"
 	printf "Misc:\n"
