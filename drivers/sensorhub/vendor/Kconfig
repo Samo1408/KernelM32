@@ -1,3 +1,0 @@
-config SHUB_MTK
-	tristate "Mediatek project"
-	default n
