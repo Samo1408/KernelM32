@@ -995,6 +995,15 @@ struct task_struct {
 	unsigned long			min_flt;
 	unsigned long			maj_flt;
 
+#ifdef CONFIG_MTK_MLOG
+	/* Page-in/out accounting for filemap fault and swap */
+	unsigned long			fm_flt;
+#ifdef CONFIG_SWAP
+	unsigned long			swap_in;
+	unsigned long			swap_out;
+#endif
+#endif
+
 #ifdef CONFIG_POSIX_TIMERS
 	struct task_cputime		cputime_expires;
 	struct list_head		cpu_timers[3];
@@ -1391,6 +1400,10 @@ struct task_struct {
 	 * New fields for task_struct should be added above here, so that
 	 * they are included in the randomized portion of task_struct.
 	 */
+#ifdef CONFIG_KSU_SUSFS
+	u64 susfs_task_state;
+	u64 susfs_last_fake_mnt_id;
+#endif
 	randomized_struct_fields_end
 
 	/* CPU-specific state of this task: */
