@@ -6,21 +6,21 @@
 #
 
 # << If unset, you can override if u want
-[ -z $IS_CI ] && IS_CI=false
+[ -z $IS_CI ] && IS_CI=true
 [ -z $DO_CLEAN ] && DO_CLEAN=false
-[ -z $LTO ] && LTO=none
+[ -z $LTO ] && LTO=full
 [ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo141988/KernelSU-Next/next-susfs-new/kernel/setup.sh"
 [ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="next-susfs-new"
 [ -z $DEFAULT_AK3_REPO ] && DEFAULT_AK3_REPO="https://github.com/Samo141988/AnyKernel3.git"
-[ -z $DEVICE ] && DEVICE="M325FV"
+[ -z $DEVICE ] && DEVICE="E225F"
 [ -z $IMAGE ] && IMAGE="$(pwd)/out/arch/arm64/boot/Image"
 
 # special rissu's path. linked to his toolchains
-if [ -d /rsuntk ]; then
-	export CROSS_COMPILE=/rsuntk/toolchains/google/bin/aarch64-linux-android-
- 	export CROSS_COMPILE_COMPAT=/rsuntk/toolchains/arm/bin/arm-linux-gnueabi-
+if [ -d /Samo141988 ]; then
+	export CROSS_COMPILE=/Samo141988/toolchains/google/bin/aarch64-linux-android-
+ 	export CROSS_COMPILE_COMPAT=/Samo141988/toolchains/arm/bin/arm-linux-gnueabi-
 	export CROSS_COMPILE_ARM32=$CROSS_COMPILE_COMPAT
- 	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
+ 	export PATH=/Samo141988/toolchains/clang-20/bin:$PATH
 fi
 #git remote add -f external-repo 
 git submodule add https://github.com/Samo141988/wmkf22.git external_repo
@@ -218,9 +218,9 @@ else
 fi
 
 pr_sum() {
-	[ -z $KBUILD_BUILD_USER ] && KBUILD_BUILD_USER="`whoami`"
-	[ -z $KBUILD_BUILD_HOST ] && KBUILD_BUILD_HOST="`uname -n`"
- 	pr_step "1" "3" "Starting build with Rissu's build script ..."
+	[ -z $KBUILD_BUILD_USER ] && KBUILD_BUILD_USER="Samo141988"
+	[ -z $KBUILD_BUILD_HOST ] && KBUILD_BUILD_HOST="Samo141988"
+ 	pr_step "1" "3" "Starting build with Samo141988's build script ..."
 	echo ""
 	echo "======================================================="
 	echo -e "Host Arch: `uname -m`"
