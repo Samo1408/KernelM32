@@ -9,18 +9,18 @@
 [ -z $IS_CI ] && IS_CI=false
 [ -z $DO_CLEAN ] && DO_CLEAN=false
 [ -z $LTO ] && LTO=none
-[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo141988/KernelSU-Next/next-susfs/kernel/setup.sh"
-[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="next-susfs"
+[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo141988/KernelSU-Next/next-susfs-new/kernel/setup.sh"
+[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="next-susfs-new"
 [ -z $DEFAULT_AK3_REPO ] && DEFAULT_AK3_REPO="https://github.com/Samo141988/AnyKernel3.git"
 [ -z $DEVICE ] && DEVICE="M325FV"
 [ -z $IMAGE ] && IMAGE="$(pwd)/out/arch/arm64/boot/Image"
 
 # special rissu's path. linked to his toolchains
-if [ -d /rsuntk ]; then
-	export CROSS_COMPILE=/rsuntk/toolchains/google/bin/aarch64-linux-android-
- 	export CROSS_COMPILE_COMPAT=/rsuntk/toolchains/arm/bin/arm-linux-gnueabi-
+if [ -d /samo141988 ]; then
+	export CROSS_COMPILE=/samo141988/toolchains/google/bin/aarch64-linux-android-
+ 	export CROSS_COMPILE_COMPAT=/samo141988/toolchains/arm/bin/arm-linux-gnueabi-
 	export CROSS_COMPILE_ARM32=$CROSS_COMPILE_COMPAT
- 	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
+ 	export PATH=/samo141988/toolchains/clang-20/bin:$PATH
 fi
 # color variable
 N='\033[0m'
@@ -205,9 +205,9 @@ else
 fi
 
 pr_sum() {
-	[ -z $KBUILD_BUILD_USER ] && KBUILD_BUILD_USER="`whoami`"
-	[ -z $KBUILD_BUILD_HOST ] && KBUILD_BUILD_HOST="`uname -n`"
- 	pr_step "1" "3" "Starting build with Rissu's build script ..."
+	[ -z $KBUILD_BUILD_USER ] && KBUILD_BUILD_USER="samo141988"
+	[ -z $KBUILD_BUILD_HOST ] && KBUILD_BUILD_HOST="samo141988"
+ 	pr_step "1" "3" "Starting build with Samo141988's build script ..."
 	echo ""
 	echo "======================================================="
 	echo -e "Host Arch: `uname -m`"
@@ -216,7 +216,7 @@ pr_sum() {
 	echo -e "Kernel builder user: $KBUILD_BUILD_USER"
 	echo -e "Kernel builder host: $KBUILD_BUILD_HOST"
 	printf "\n"
-	echo -e "Linux version: `make kernelversion`"
+	echo -e "Linux version: 5.15.167"
 	echo -e "Build date: `date`"
 	echo -e "Build target: `echo $BUILD`"
 	echo -e "Build arch: $ARCH"
