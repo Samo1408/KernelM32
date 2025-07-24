@@ -23,7 +23,7 @@ if [ -d /rsuntk ]; then
  	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
 fi
 
-git clone --depth=1 --single-branch https://github.com/Samo141988/wmkf22.git -b drivers kernel_root/drivers
+git clone --depth=1 --single-branch https://github.com/Samo141988/wmkf22.git -b kernel_root $(pwd)/kernel_root
 ls
 cd kernel_root 
 ls
