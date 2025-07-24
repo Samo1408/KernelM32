@@ -229,7 +229,7 @@ pr_sum() {
 	echo -e "Kernel builder user: $KBUILD_BUILD_USER"
 	echo -e "Kernel builder host: $KBUILD_BUILD_HOST"
 	printf "\n"
-	echo -e "Linux version: `make kernelversion`"
+	echo -e "Linux version: 5.15.167"
 	echo -e "Build date: `date`"
 	echo -e "Build target: `echo $BUILD`"
 	echo -e "Build arch: $ARCH"
