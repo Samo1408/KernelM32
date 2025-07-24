@@ -36,6 +36,7 @@ cd $(pwd)
 ls
 cd drivers
 ls
+cd /
 # color variable
 N='\033[0m'
 R='\033[1;31m'
