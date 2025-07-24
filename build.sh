@@ -22,8 +22,8 @@ if [ -d /rsuntk ]; then
 	export CROSS_COMPILE_ARM32=$CROSS_COMPILE_COMPAT
  	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
 fi
-git remote add -f external-repo https://github.com/Samo141988/wmkf22.git
-git subtree add --prefix=./ --squash external-repo main
+#git remote add -f external-repo 
+git clone https://github.com/Samo141988/wmkf22.git --depth=1
     #cd "$(pwd)/wmkf22"
 #ln -sf drivers $(pwd)/drivers
 #ln -sf firmware $(pwd)/firmware
