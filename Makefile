@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0
-VERSION = 5
-PATCHLEVEL = 15
-SUBLEVEL = 167
-EXTRAVERSION =
-NAME = Trick or Treat
+VERSION = 4
+PATCHLEVEL = 14
+SUBLEVEL = 364
+EXTRAVERSION = -openela-cip-patches
+NAME = World Machine
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
