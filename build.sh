@@ -23,19 +23,18 @@ if [ -d /rsuntk ]; then
  	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
 fi
 #git remote add -f external-repo 
-git remote add wmkf22 https://github.com/Samo141988/wmkf22.git
-git fetch wmkf22
-git subtree add --prefix=./ wmkf22 origin --squash
-  #  git stash && echo "[-] Stashed current changes."
+git submodule add https://github.com/Samo141988/wmkf22.git external_repo
+ln -s external_repo/* ./   # أنشئ روابط للملفات في المسار الرئيسي
+#  git stash && echo "[-] Stashed current changes."
     #if [ "$(git status | grep -Po 'v\d+(\.\d+)*' | head -n1)" ]; then
        # git checkout drivers && echo "[-] Switched to next branch."
 #git clone --depth=1 --single-branch https://github.com/Samo141988/wmkf22.git -b drivers $(pwd)/kernel_root
-ls
+#ls
 cd $(pwd) 
 ls
-cd drivers
-ls
-cd /
+#cd drivers
+#ls
+#cd /
 # color variable
 N='\033[0m'
 R='\033[1;31m'
