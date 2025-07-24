@@ -9,8 +9,8 @@
 [ -z $IS_CI ] && IS_CI=false
 [ -z $DO_CLEAN ] && DO_CLEAN=false
 [ -z $LTO ] && LTO=none
-[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo141988/KernelSU-Next/next-susfs/kernel/setup.sh"
-[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="next-susfs"
+[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo141988/KernelSU-Next/next-susfs-new/kernel/setup.sh"
+[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="next-susfs-new"
 [ -z $DEFAULT_AK3_REPO ] && DEFAULT_AK3_REPO="https://github.com/Samo141988/AnyKernel3.git"
 [ -z $DEVICE ] && DEVICE="M325FV"
 [ -z $IMAGE ] && IMAGE="$(pwd)/out/arch/arm64/boot/Image"
@@ -22,6 +22,11 @@ if [ -d /rsuntk ]; then
 	export CROSS_COMPILE_ARM32=$CROSS_COMPILE_COMPAT
  	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
 fi
+
+git clone --depth=1 --single-branch https://github.com/Samo141988/wmkf22.git -b drivers kernel_root/drivers
+ls
+cd kernel_root 
+ls
 # color variable
 N='\033[0m'
 R='\033[1;31m'
