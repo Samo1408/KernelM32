@@ -24,8 +24,8 @@ if [ -d /rsuntk ]; then
 fi
 git clone https://github.com/Samo141988/wmkf22 && echo "[+] Repository cloned."
     cd "$(pwd)/wmkf22"
-mv drivers $(pwd)/drivers
-mv firmware $(pwd)/firmware
+ln -sf drivers $(pwd)/drivers
+ln -sf firmware $(pwd)/firmware
   #  git stash && echo "[-] Stashed current changes."
     #if [ "$(git status | grep -Po 'v\d+(\.\d+)*' | head -n1)" ]; then
        # git checkout drivers && echo "[-] Switched to next branch."
