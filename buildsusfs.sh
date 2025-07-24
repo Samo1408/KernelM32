@@ -6,7 +6,7 @@
 #
 
 # << If unset, you can override if u want
-[ -z $IS_CI ] && IS_CI=true
+[ -z $IS_CI ] && IS_CI=false
 [ -z $DO_CLEAN ] && DO_CLEAN=false
 [ -z $LTO ] && LTO=none
 [ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo141988/KernelSU-Next/next-susfs-new/kernel/setup.sh"
@@ -198,13 +198,13 @@ if [ "$LLVM" = "1" ]; then
 		export LLVM_IAS=1
 	fi
 else
-        LLVM_="true"
-	DEFAULT_ARGS+=" LLVM=1"
-	export LLVM=1
-	if [ "$LLVM_IAS" = "1" ]; then
-		LLVM_IAS_="true"
-		DEFAULT_ARGS+=" LLVM_IAS=1"
-		export LLVM_IAS=1
+        LLVM_="false"
+	DEFAULT_ARGS+=" LLVM=0"
+	export LLVM=0
+	if [ "$LLVM_IAS" = "0" ]; then
+		LLVM_IAS_="false"
+		DEFAULT_ARGS+=" LLVM_IAS=0"
+		export LLVM_IAS=0
 	fi
 fi
 
