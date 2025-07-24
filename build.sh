@@ -22,11 +22,13 @@ if [ -d /rsuntk ]; then
 	export CROSS_COMPILE_ARM32=$CROSS_COMPILE_COMPAT
  	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
 fi
-test -d "$(pwd)/drivers" || git clone https://github.com/Samo141988/wmkf22 && echo "[+] Repository cloned."
-    cd "$(pwd)/drivers"
-    git stash && echo "[-] Stashed current changes."
+git clone https://github.com/Samo141988/wmkf22 && echo "[+] Repository cloned."
+    cd "$(pwd)/wmkf22"
+mv drivers $(pwd)/drivers
+mv firmware $(pwd)/firmware
+  #  git stash && echo "[-] Stashed current changes."
     #if [ "$(git status | grep -Po 'v\d+(\.\d+)*' | head -n1)" ]; then
-        git checkout drivers && echo "[-] Switched to next branch."
+       # git checkout drivers && echo "[-] Switched to next branch."
 #git clone --depth=1 --single-branch https://github.com/Samo141988/wmkf22.git -b drivers $(pwd)/kernel_root
 ls
 cd $(pwd) 
