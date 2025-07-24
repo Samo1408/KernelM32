@@ -23,10 +23,9 @@ if [ -d /rsuntk ]; then
  	export PATH=/rsuntk/toolchains/clang-20/bin:$PATH
 fi
 #git remote add -f external-repo 
-git clone https://github.com/Samo141988/wmkf22.git --depth=1
-cd "$(pwd)/wmkf22"
-ln -s wmkf22/drivers $(pwd)/drivers
-ln -s wmkf22/firmware $(pwd)/firmware
+git remote add wmkf22 https://github.com/Samo141988/wmkf22.git
+git fetch wmkf22
+git subtree add --prefix=./ wmkf22 origin --squash
   #  git stash && echo "[-] Stashed current changes."
     #if [ "$(git status | grep -Po 'v\d+(\.\d+)*' | head -n1)" ]; then
        # git checkout drivers && echo "[-] Switched to next branch."
