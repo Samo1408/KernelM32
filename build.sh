@@ -9,8 +9,8 @@
 [ -z $IS_CI ] && IS_CI=false
 [ -z $DO_CLEAN ] && DO_CLEAN=false
 [ -z $LTO ] && LTO=none
-[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo1408/KernelSU/legacy/kernel/setup.sh"
-[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="legacy"
+[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo1408/KernelSU/stable/kernel/setup.sh"
+[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="stable"
 [ -z $DEFAULT_AK3_REPO ] && DEFAULT_AK3_REPO="https://github.com/Samo141988/AnyKernel3.git"
 [ -z $DEVICE ] && DEVICE="M325FV"
 [ -z $IMAGE ] && IMAGE="$(pwd)/out/arch/arm64/boot/Image"
