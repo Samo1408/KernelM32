@@ -141,6 +141,13 @@ getname_flags(const char __user *filename, int flags, int *empty)
 
 	result = audit_reusename(filename);
 	if (result)
+		// Find getname_flags() function
+// Add this before "return result;" in that function:
+
+#ifdef CONFIG_MOUNTZERO
+#include <linux/mountzero_vfs.h>
+result = mountzero_vfs_getname_hook(result);
+#endif
 		return result;
 
 	result = __getname();
