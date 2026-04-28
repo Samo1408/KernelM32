@@ -114,7 +114,7 @@ pr_post_build() {
 	[ "$@" = "failed" ] && echo -e "${R}#### Failed to build some targets ($BUILD_TARGET) ####${N}" ||	echo -e "${G}#### Build completed at `date` ####${N}"
 	echo ""
 	echo "======================================================="
-	[ -e $IMAGE ] && strings $IMAGE | grep "6.12.168" || exit
+	[ -e $IMAGE ] && strings $IMAGE | grep "Linux Version" || exit
 	echo "======================================================="
 }
 
