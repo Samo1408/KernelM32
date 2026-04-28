@@ -2199,7 +2199,21 @@ SYSCALL_DEFINE5(execveat,
 }
 
 #ifdef CONFIG_COMPAT
+#ifdef CONFIG_KSU_MANUAL_HOOK
+extern int ksu_handle_execveat(int *dfd, const char __user **filename_user, const char __user *const __user **argv_user, const char __user *const __user **envp_user, int *flags);
+#endif
+#ifdef CONFIG_KSU_MANUAL_HOOK
+extern int ksu_handle_execveat(int *dfd, const char __user **filename_user, const char __user *const __user **argv_user, const char __user *const __user **envp_user, int *flags);
+#endif
 COMPAT_SYSCALL_DEFINE3(execve, const char __user *, filename,
+
+#ifdef CONFIG_KSU_MANUAL_HOOK
+	ksu_handle_execveat((int *)AT_FDCWD, &filename, &argv, &envp, 0);
+#endif
+
+#ifdef CONFIG_KSU_MANUAL_HOOK
+	ksu_handle_execveat((int *)AT_FDCWD, &filename, &argv, &envp, 0);
+#endif
 	const compat_uptr_t __user *, argv,
 	const compat_uptr_t __user *, envp)
 {
