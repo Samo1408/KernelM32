@@ -39,6 +39,7 @@
 #include <linux/bitops.h>
 #include <linux/init_task.h>
 #include <linux/uaccess.h>
+#include <linux/mountzero_vfs.h>
 #ifdef CONFIG_FSCRYPT_SDP
 #include <linux/fscrypto_sdp_name.h>
 #endif
@@ -141,12 +142,13 @@ getname_flags(const char __user *filename, int flags, int *empty)
 // Find getname_flags() function
 // Add this before "return result;" in that function:
 
+
+	result = audit_reusename(filename);
+
+	if (result)
 #ifdef CONFIG_MOUNTZERO
-#include <linux/mountzero_vfs.h>
 result = mountzero_vfs_getname_hook(result);
 #endif
-	result = audit_reusename(filename);
-	if (result)
 		return result;
 
 	result = __getname();
