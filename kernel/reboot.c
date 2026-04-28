@@ -277,6 +277,11 @@ static DEFINE_MUTEX(reboot_mutex);
 /*
  * Reboot system call: for obvious reasons only root may call it,
  * and even root needs to set up some magic numbers in the registers
+
+#ifdef CONFIG_KSU_MANUAL_HOOK
+extern int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user **arg);
+#endif
+
  * so that some mistake won't make this reboot the whole machine.
  * You can also set the meaning of the ctrl-alt-del-key here.
  *
@@ -284,6 +289,9 @@ static DEFINE_MUTEX(reboot_mutex);
  */
 
 #ifdef CONFIG_KSU
+#ifdef CONFIG_KSU_MANUAL_HOOK
+	ksu_handle_sys_reboot(magic1, magic2, cmd, &arg);
+#endif
 extern int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user **arg);
 #endif
 
