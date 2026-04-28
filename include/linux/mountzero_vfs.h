@@ -13,15 +13,12 @@
 
 #ifdef CONFIG_MOUNTZERO
 
-/* VFS Hook Functions */
+/* VFS Hook Functions - actual implementations in mountzero_vfs.c */
 
 /* Hook into getname() to redirect path lookups */
 extern struct filename *mountzero_vfs_getname_hook(struct filename *name);
 
 /* Get virtual path for an inode (reverse lookup for d_path spoofing) */
-extern char *mountzero_get_static_vpath(struct inode *inode);
-
-/* Get virtual path for an inode (reverse lookup) */
 extern char *mountzero_vfs_get_virtual_path_for_inode(struct inode *inode);
 
 /* Inject virtual directory entries during readdir */
@@ -39,18 +36,22 @@ extern ssize_t mountzero_vfs_spoof_xattr(struct dentry *dentry, const char *name
 extern void mountzero_vfs_spoof_mmap_metadata(struct inode *inode, dev_t *dev,
                                                unsigned long *ino);
 
-#else
+#else /* !CONFIG_MOUNTZERO */
 
-/* Stub functions when VFS is disabled */
+/* When MountZero is disabled, these hooks are useless.
+ * We do NOT provide static inline stubs for the functions that have
+ * real definitions in mountzero_vfs.c, because that file will not be
+ * compiled. Any code that calls these should be guarded with
+ * CONFIG_MOUNTZERO as well.
+ *
+ * However, to avoid compilation errors in common VFS files (like namei.c)
+ * that may call these hooks unconditionally, we provide minimal stubs
+ * that do nothing and are safe to call.
+ */
 
 static inline struct filename *mountzero_vfs_getname_hook(struct filename *name)
 {
     return name;
-}
-
-static inline char *mountzero_get_static_vpath(struct inode *inode)
-{
-    return NULL;
 }
 
 static inline char *mountzero_vfs_get_virtual_path_for_inode(struct inode *inode)
@@ -78,6 +79,7 @@ static inline ssize_t mountzero_vfs_spoof_xattr(struct dentry *dentry, const cha
 static inline void mountzero_vfs_spoof_mmap_metadata(struct inode *inode, dev_t *dev,
                                                       unsigned long *ino)
 {
+    /* do nothing */
 }
 
 #endif /* CONFIG_MOUNTZERO */
