@@ -135,8 +135,8 @@ int mountzero_vfs_inject_dents(struct file *file, void __user **dirent,
     if (atomic_read(&mountzero_enabled) == 0)
         return 0;
 
-    // actor set at initialization
-    // pos set at initialization
+    /* actor set at initialization */
+    /* pos set at initialization */
     ic.dirent = *dirent;
     ic.count = count;
     ic.pos = pos;
