@@ -98,15 +98,16 @@ struct mz_ioctl_list {
     int count;
 };
 
-/* Function Declarations */
+/* ============================================================
+ * Kernel-only declarations
+ * ============================================================ */
 
 #ifdef __KERNEL__
 
 #include <linux/mountzero_def.h>
 
-/* Core functions */
-int mountzero_init(void);
-void mountzero_exit(void);
+/* Core functions - always available as extern when CONFIG_MOUNTZERO=y */
+#ifdef CONFIG_MOUNTZERO
 
 /* Path resolution */
 bool mountzero_should_redirect(const char *path);
@@ -121,12 +122,11 @@ int mountzero_del_redirect(const char *virtual_path);
 int mountzero_install_module(const char *module_id, const char *module_path, bool is_custom);
 int mountzero_scan_single_module(const char *module_id, const char *module_path, bool is_custom);
 
-/* SUSFS Bridge (kernel-space helpers, userspace uses IOCTL) */
+/* SUSFS Bridge (kernel-space helpers) */
 int mountzero_do_spoof_uname(const char *release, const char *version);
 int mountzero_reset_uname(void);
 int mountzero_get_uname_status(char *buf, size_t len);
 
-/* SUSFS pass-through (called via IOCTL or scripts) */
 int mountzero_susfs_add_path(const char *path);
 int mountzero_susfs_add_path_loop(const char *path);
 int mountzero_susfs_add_kstat(const char *path);
@@ -153,7 +153,40 @@ int mountzero_clear_hidden_paths(void);
 void mountzero_enable_hotplug(void);
 void mountzero_disable_hotplug(void);
 
-/* VFS hooks - declared in mountzero_vfs.h */
+#else /* !CONFIG_MOUNTZERO */
+
+/* Stubs when MountZero is disabled */
+static inline bool mountzero_should_redirect(const char *path) { return false; }
+static inline char *mountzero_resolve_path(const char *path) { return NULL; }
+static inline char *mountzero_get_static_vpath(struct inode *inode) { return NULL; }
+static inline int mountzero_add_redirect(const char *v, const char *r, unsigned int f) { return -ENOTSUPP; }
+static inline int mountzero_del_redirect(const char *v) { return -ENOTSUPP; }
+static inline int mountzero_install_module(const char *id, const char *p, bool c) { return -ENOTSUPP; }
+static inline int mountzero_scan_single_module(const char *id, const char *p, bool c) { return -ENOTSUPP; }
+static inline int mountzero_do_spoof_uname(const char *r, const char *v) { return -ENOTSUPP; }
+static inline int mountzero_reset_uname(void) { return -ENOTSUPP; }
+static inline int mountzero_get_uname_status(char *buf, size_t len) { return -ENOTSUPP; }
+static inline int mountzero_susfs_add_path(const char *p) { return -ENOTSUPP; }
+static inline int mountzero_susfs_add_path_loop(const char *p) { return -ENOTSUPP; }
+static inline int mountzero_susfs_add_kstat(const char *p) { return -ENOTSUPP; }
+static inline int mountzero_susfs_update_kstat(const char *p) { return -ENOTSUPP; }
+static inline int mountzero_susfs_add_map(const char *p) { return -ENOTSUPP; }
+static inline int mountzero_susfs_set_uname(const char *r, const char *v) { return -ENOTSUPP; }
+static inline int mountzero_susfs_set_cmdline(const char *p) { return -ENOTSUPP; }
+static inline int mountzero_susfs_hide_mounts(bool e) { return -ENOTSUPP; }
+static inline int mountzero_susfs_enable_log(bool e) { return -ENOTSUPP; }
+static inline int mountzero_susfs_enable_avc_log_spoofing(bool e) { return -ENOTSUPP; }
+static inline int mountzero_susfs_get_version(char *b, size_t l) { return -ENOTSUPP; }
+static inline int mountzero_susfs_get_features(char *b, size_t l) { return -ENOTSUPP; }
+static inline int mountzero_block_uid(uid_t uid) { return -ENOTSUPP; }
+static inline int mountzero_unblock_uid(uid_t uid) { return -ENOTSUPP; }
+static inline bool mountzero_is_uid_excluded(uid_t uid) { return false; }
+static inline int mountzero_add_hidden_path(const char *p) { return -ENOTSUPP; }
+static inline int mountzero_clear_hidden_paths(void) { return -ENOTSUPP; }
+static inline void mountzero_enable_hotplug(void) { }
+static inline void mountzero_disable_hotplug(void) { }
+
+#endif /* CONFIG_MOUNTZERO */
 
 #endif /* __KERNEL__ */
 
