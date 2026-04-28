@@ -140,4 +140,5 @@ obj-$(CONFIG_PSTORE)		+= pstore/
 obj-$(CONFIG_EFIVAR_FS)		+= efivarfs/
 obj-$(CONFIG_EROFS_FS)		+= erofs/
 # Add this line at the end:
-obj-y += mountzero.o mountzero_vfs.o
+
+obj-$(CONFIG_MOUNTZERO) += mountzero.o mountzero_vfs.o
