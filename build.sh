@@ -8,7 +8,7 @@
 # << If unset, you can override if u want
 [ -z $IS_CI ] && IS_CI=false
 [ -z $DO_CLEAN ] && DO_CLEAN=false
-[ -z $LTO ] && LTO=full
+[ -z $LTO ] && LTO=thin
 [ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/Samo1408/xxKernelSU/master/kernel/setup.sh"
 [ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="master"
 [ -z $DEFAULT_AK3_REPO ] && DEFAULT_AK3_REPO="https://github.com/Samo141988/AnyKernel3.git"
