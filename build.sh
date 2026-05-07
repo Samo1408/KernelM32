@@ -9,7 +9,7 @@
 [ -z $IS_CI ] && IS_CI=false
 [ -z $DO_CLEAN ] && DO_CLEAN=false
 [ -z $LTO ] && LTO=thin
-[ -z $DEFAULT_KSU_OWNER ] && DEFAULT_KSU_OWNER="https://github.com/backslashxx/KernelSU.git"
+#[ -z $DEFAULT_KSU_OWNER ] && DEFAULT_KSU_OWNER="https://github.com/backslashxx/KernelSU.git"
 [ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/backslashxx/KernelSU/30032b09/kernel/setup.sh"
 
 [ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="30032b09"
@@ -160,7 +160,7 @@ else
 	[ $# != 4 ] && usage;
 fi
 
-[ "$KERNELSU" = "true" ] && git clone $DEFAULT_KSU_OWNER KernelSU && curl -LSs $DEFAULT_KSU_REPO | bash -s `echo $DEFAULT_KSU_BRANCH` || pr_info "KernelSU is disabled. Add 'KERNELSU=true' or 'export KERNELSU=true' to enable"
+[ "$KERNELSU" = "true" ] && curl -LSs $DEFAULT_KSU_REPO | bash -s `echo $DEFAULT_KSU_BRANCH` || pr_info "KernelSU is disabled. Add 'KERNELSU=true' or 'export KERNELSU=true' to enable"
 
 FIRST_JOB="$2"
 JOB_COUNT="$3"
