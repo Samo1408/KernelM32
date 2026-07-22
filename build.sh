@@ -10,9 +10,9 @@
 [ -z $DO_CLEAN ] && DO_CLEAN=false
 [ -z $LTO ] && LTO=thin
 #[ -z $DEFAULT_KSU_OWNER ] && DEFAULT_KSU_OWNER="https://github.com/backslashxx/KernelSU.git"
-[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/backslashxx/KernelSU/30032b09/kernel/setup.sh"
+[ -z $DEFAULT_KSU_REPO ] && DEFAULT_KSU_REPO="https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/stable/kernel/setup.sh"
 
-[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="30032b09"
+[ -z $DEFAULT_KSU_BRANCH ] && DEFAULT_KSU_BRANCH="stable"
 [ -z $DEFAULT_AK3_REPO ] && DEFAULT_AK3_REPO="https://github.com/Samo141988/AnyKernel3.git"
 [ -z $DEVICE ] && DEVICE="M325FV"
 [ -z $IMAGE ] && IMAGE="$(pwd)/out/arch/arm64/boot/Image"
